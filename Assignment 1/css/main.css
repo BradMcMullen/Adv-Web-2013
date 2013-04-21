@@ -1,6 +1,7 @@
 /* ==========================================================================
    HTML5 Boilerplate styles - h5bp.com (generated via initializr.com)
    ========================================================================== */
+
 html,
 button,
 input,
@@ -253,7 +254,7 @@ nav a:hover {
 
     nav a {
         float: left;
-        width: 24%;
+        width: 8%;
         margin: 0 1.2%;
         padding: 15px 2%;
         margin-bottom: 0;

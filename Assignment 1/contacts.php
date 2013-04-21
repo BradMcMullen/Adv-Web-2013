@@ -1,5 +1,34 @@
-<!DOCTYPE html>
-<!-- Projects.html, Brad McMullen, Projects page for website.-->
+<?php
+session_start();
+
+if ($_SESSION['username'] =='') {
+	header('location:login.php');
+	exit;
+}
+include('db/database.php');
+
+/*
+$username = mysql_real_escape_string($_POST['username']);
+$password = mysql_real_escape_string($_POST['password']);
+$username = stripslashes($username);
+$password = stripslashes($password);
+*/
+$username = $_SESSION['username'];
+$password = $_SESSION['password'];
+
+$q = mysql_query("
+SELECT * FROM contacts WHERE name='$username' AND password='$password'
+ORDER BY cname;
+");
+
+$contacts = array();
+
+while ($row = mysql_fetch_array($q)) {
+$contacts[] = $row;
+}
+
+?>
+<!-- About.html, Brad McMullen, About page for website.-->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -28,8 +57,8 @@
                 <nav>
                     <ul>
                         <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/index.html">Home</a></li>
-                        <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/about.html">About Me</a></li>
-                        <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/projects.html" style="background-color:#80D0E4 !important;">Projects</a></li>
+                        <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/about.html" style="background-color:#80D0E4 !important;">About Me</a></li>
+                        <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/projects.html">Projects</a></li>
                         <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/services.html">Services</a></li>
                         <li><a href="http://www.github.com/bradmcmullen" style="text-size:21px;">Github</a></li>
                         <li><a href="http://webdesign4.georgianc.on.ca/~200162912/adv_web_a1/contact.html">Contact Me</a></li>
@@ -44,21 +73,33 @@
 
                 <article>
                     <header>
-                        <h1>Projects!</h1>
+                        <h1>Contacts</h1>
                     </header>
                     <br/>
                     <section>
-                    	<center>
-                        <p>
-                        	<a href="http://www.thaincreative.com"><img src="img/thainssLG.png"/></a><br/><br/><br/>
-                        	<a href="http://taylerfinancialservices.com"><img src="img/taylerssLG.png"/></a><br/><br/><br/>
-                        	<a href="http://www.nerroofing.com/WP"><img src="img/nerroofingssLG.png"/></a>
-                        </p>
-                       </center>
+					<center>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Phone</th>
+				</tr>
+				
+				<?php 
+				foreach ($contacts as $contact):
+					echo "<tr><td>";?>
+					<a href="" onClick="alert('Name: <?php echo htmlentities($contact['cname']) .'\nEmail: '. htmlentities($contact['cemail']).' \nPhone: ' . htmlentities($contact['cphone']). ' \nAddress: ' . htmlentities($contact['caddress']);?> ')"><?php echo htmlentities($contact['cname']); ?></a>
+					<?php
+					echo "</td><td>";?>
+					<a href="tel:<?php echo htmlentities($contact['cphone']);?>"><?php echo htmlentities($contact['cphone']);?></a>
+					<?php
+				endforeach;
+				
+				?>
+			</table></center><br/><br/>
+			<a href="logout.php" style="color:#06F !important;">Log Out</a>
                     </section><br/>
                     
                 </article>
-
             </div> <!-- #main -->
         </div> <!-- #main-container -->
 
@@ -67,13 +108,5 @@
                 <h3>&copy; 2013, Brad McMullen, All Rights Reserved.</h3>
             </footer></center>
         </div>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.3.min.js"><\/script>')</script>
-
-        <script src="js/main.js"></script>
-        <script src="js/1/js-image-slider.js" type="text/javascript"></script>
-
-
     </body>
 </html>
